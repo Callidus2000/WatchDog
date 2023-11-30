@@ -1,0 +1,22 @@
+﻿
+# ignore the settings folder and files for VSCode and PSS
+.vscode/*
+*.psproj
+*TempPoint*
+
+# Ignore staging info from Visual Studio
+library/WatchDog/.vs/*
+library/WatchDog/WatchDog/bin/*
+library/WatchDog/WatchDog/obj/*
+
+# ignore PowerShell Studio MetaData
+WatchDog/WatchDog.psproj
+WatchDog/WatchDog.psproj.bak
+WatchDog/WatchDog.psprojs
+WatchDog/WatchDog.psproj
+
+# ignore the TestResults
+TestResults/*
+
+# ignore the publishing Directory
+publish/*
