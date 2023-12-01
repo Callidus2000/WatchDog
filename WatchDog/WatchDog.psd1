@@ -69,13 +69,13 @@
 		PSData = @{
 
 			# Tags applied to this module. These help with module discovery in online galleries.
-			# Tags = @()
+			Tags = @('watchdog')
 
 			# A URL to the license for this module.
-			# LicenseUri = ''
+			LicenseUri = 'https://github.com/Callidus2000/WatchDog/blob/master/LICENSE'
 
 			# A URL to the main website for this project.
-			# ProjectUri = ''
+			ProjectUri = 'https://github.com/Callidus2000/WatchDog'
 
 			# A URL to an icon representing this module.
 			# IconUri = ''
