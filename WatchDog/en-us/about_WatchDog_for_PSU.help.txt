@@ -1,0 +1,12 @@
+﻿TOPIC
+	about_WatchDog_for_PSU
+
+SHORT DESCRIPTION
+	This is an example how to use the WatchDog module for watching PowerShell Universal.
+
+LONG DESCRIPTION
+	Build the WatchDog configuration
+    Build-WatchDog -
+
+KEYWORDS
+	WatchDog
