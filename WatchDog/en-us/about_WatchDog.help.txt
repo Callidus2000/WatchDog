@@ -1,11 +1,21 @@
-﻿TOPIC
-	about_WatchDog
-	
-SHORT DESCRIPTION
-	Explains how to use the WatchDog powershell module
-	
-LONG DESCRIPTION
-	<Insert Content here>
+﻿<#
+.SYNOPSIS
+    Explains the concepts and usage of WatchDog functions in PowerShell.
 
-KEYWORDS
-	WatchDog
+.DESCRIPTION
+    The WatchDog functions provide a monitoring solution in PowerShell, allowing you to continuously check conditions, perform corrective actions, and maintain the health of your critical processes.
+
+.NOTES
+    File Name      : about_WatchDog.help.txt
+    Author         : Sascha Spiekermann
+    Prerequisites  : PowerShell 5.1 or later
+
+.LINK
+    GitHub Repository: https://github.com/Callidus2000/WatchDog
+
+.EXAMPLE
+    Get-Help about_WatchDog
+
+    Displays help information about WatchDog functions.
+
+#>

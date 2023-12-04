@@ -3,7 +3,7 @@
 	RootModule = 'WatchDog.psm1'
 
 	# Version number of this module.
-	ModuleVersion = '1.0.0'
+	ModuleVersion = '1.0.1'
 
 	# ID used to uniquely identify this module
 	GUID = '368f5935-0766-4c9a-aa12-6407c24998f1'
