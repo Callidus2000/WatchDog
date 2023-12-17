@@ -1,25 +1,43 @@
 ﻿function Build-WatchDog {
     <#
     .SYNOPSIS
-        Builds and configures a WatchDog instance to monitor and correct errors based on specified conditions.
+        Builds and configures a WatchDog instance to monitor and correct errors
+        based on specified conditions.
 
     .DESCRIPTION
-        The Build-WatchDog function creates a WatchDog instance that monitors a specified condition and triggers an error correction script when necessary.
+        The Build-WatchDog function creates a WatchDog instance that monitors a
+        specified condition and triggers an error correction script when
+        necessary.
 
     .PARAMETER Name
-        Specifies the name of the WatchDog instance. This name is used to identify and configure the WatchDog instance.
+        Specifies the name of the WatchDog instance. This name is used to
+        identify and configure the WatchDog instance.
 
     .PARAMETER Check
-        Specifies a script block that defines the condition to be monitored by the WatchDog. The WatchDog triggers the error correction script if this condition is not met.
+        Specifies a script block that defines the condition to be monitored by
+        the WatchDog. The WatchDog triggers the error correction script if this
+        condition is not met. If the check fails the scriptblock should throw an
+        error. If so the check is repeated for another $CheckRetryCount times
+        until the ErrorCorrection scriptblock is executed
 
     .PARAMETER ErrorCorrection
-        Specifies a script block that contains the corrective actions to be taken when the WatchDog detects an error based on the specified condition.
+        Specifies a script block that contains the corrective actions to be
+        taken when the WatchDog detects an error based on the specified
+        condition. If the correction fails the scriptblock should throw an
+        error. If so the code is repeated for another $CorrectionRetryCount
+        times. If the correction fails at all the current instance of the
+        watchdog is stopped.
 
     .PARAMETER CheckInterval
-        Specifies the time interval at which the WatchDog should check the specified condition. The default interval is 5 minutes.
+        Specifies the time interval at which the WatchDog should check the
+        specified condition. The default interval is 5 minutes.
 
+    .PARAMETER CheckRetryCount
+        Specifies the number of times the check script should be retried if it
+        fails. The default retry count is 4.
     .PARAMETER CorrectionRetryCount
-        Specifies the number of times the error correction script should be retried if it fails. The default retry count is 4.
+        Specifies the number of times the error correction script should be
+        retried if it fails. The default retry count is 4.
 
     .EXAMPLE
         Build-WatchDog -Name "LocalPSU" -Check {
@@ -49,9 +67,9 @@
         [scriptblock]$Check,
         [parameter(Mandatory=$true)]
         [scriptblock]$ErrorCorrection,
-        [timespan]$CheckInterval = [timespan]::FromMinutes(5),
-        [int]$CorrectionRetryCount=4,
-        [int]$CheckRetryCount=4
+        [timespan]$CheckInterval = [timespan]::FromMinutes(1),
+        [int]$CorrectionRetryCount=2,
+        [int]$CheckRetryCount=2
     )
     Test-WatchDogIsAdmin
     # Build-WatchDog -Name "LocalPSU" -Check { try { (Invoke-WebRequest http://localhost:5000/api/v1/alive -ErrorAction stop).Statuscode -eq 200 }catch { $false } } -ErrorCorrection { restart-service powershelluniversal}

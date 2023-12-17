@@ -29,25 +29,13 @@
     $config = Get-WatchDogConfig -Name $Name
     $config.checkScript = [scriptblock]::Create($config.checkScript)
     $config.correctionScript = [scriptblock]::Create($config.correctionScript)
-    $checkErrorCounter = 0
     do {
-
-        $everyThingIsFine = Invoke-PSFProtectedCommand -Action "Perform Check for WatchDog Instance" -Target $Name -ScriptBlock {
-            Write-PSFMessage -Level Verbose -Message "Executing {$($config.checkScript)}" -Tag $Name
-            Invoke-Command $config.checkScript
-        } -Level host -EnableException $false -RetryCount $config.checkRetryCount -Tag $Name
-        if (Test-PSFFunctionInterrupt) {
-            Stop-PSFFunction -Level Error -Message "Check ScriptBlock fails, aborting execution" -EnableException $true -Tag $Name
-        }
+        $everyThingIsFine = Invoke-WatchDogScript -ScriptBlock $config.checkScript -LoggingAction "Perform Check for WatchDog Instance" -LoggingTag $Name -RetryCount $config.checkRetryCount
         if (-not $everyThingIsFine) {
             $checkErrorCounter++
-            Invoke-PSFProtectedCommand -Action "Check failed, performing correction for WatchDog" -Target $Name -ScriptBlock {
-                Write-PSFMessage -Level Verbose -Message "Executing {$($config.correctionScript)}" -Tag $Name
-                Invoke-Command $config.correctionScript
-                # $config.correctionScript
-            } -Level Warning -EnableException $false -RetryCount $config.correctionRetryCount -Tag $Name
-            if (Test-PSFFunctionInterrupt) {
-                Stop-PSFFunction -Level Error -Message "Correction ScriptBlock fails, aborting execution" -EnableException $true -Tag $Name
+            $everyThingIsFine = Invoke-WatchDogScript -ScriptBlock $config.correctionScript -LoggingAction "Check failed, performing correction for WatchDog" -LoggingTag $Name -RetryCount $config.correctionRetryCount
+            if (-not $everyThingIsFine){
+                    Stop-PSFFunction -Level Error -Message "Correction ScriptBlock fails, aborting execution" -EnableException $true -Tag $Name
             }
         }
         else {
@@ -58,5 +46,4 @@
         }
         Start-Sleep -Seconds $config.checkInterval.TotalSeconds
     }while ($true)
-    return $result
 }

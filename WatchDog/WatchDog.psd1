@@ -3,7 +3,7 @@
 	RootModule = 'WatchDog.psm1'
 
 	# Version number of this module.
-	ModuleVersion = '1.0.1'
+	ModuleVersion = '1.1.1'
 
 	# ID used to uniquely identify this module
 	GUID = '368f5935-0766-4c9a-aa12-6407c24998f1'
@@ -40,7 +40,11 @@
 
 	# Functions to export from this module
 	FunctionsToExport = @(
+		# 'Add-WatchDogError'
 		'Build-WatchDog'
+		'Get-WatchDogConfig'
+		'Get-WatchDogError'
+		# 'Invoke-WatchDogScript'
 		'Register-WatchDog'
 		'Remove-WatchDog'
 		'Start-WatchDog'
@@ -81,7 +85,12 @@
 			# IconUri = ''
 
 			# ReleaseNotes of this module
-			# ReleaseNotes = ''
+			ReleaseNotes = @"
+# Breaking release 1.1.0
+- The return value of the Check and Fix scriptblocks is discarded
+- `throw` an exception in the scriptblocks to indicate an error
+- README on GitHub got extra info for business logik
+"@
 
 		} # End of PSData hashtable
 

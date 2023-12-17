@@ -136,12 +136,18 @@ Please be aware that those commands have to be issued in an administrative shell
 
 ### Configuring a WatchDog Instance
 ```powershell
-Build-WatchDog -Name "LocalPSU" -Check { try { (Invoke-WebRequest http://localhost:5000/api/v1/alive -ErrorAction stop).Statuscode -eq 200 }catch { $false } } -ErrorCorrection { restart-service powershelluniversal}
+Build-WatchDog -Name "LocalPSU" -Check { 
+    if ((Invoke-WebRequest http://localhost:5000/api/v1/alive -ErrorAction stop).Statuscode -ne 200) { throw "Alive status not 200" } 
+} -ErrorCorrection { 
+    $previousError=Get-Error |ConvertTo-Json -Depth 2
+    Send-MailMessage -SmtpServer smtp.company.com -To support@company.com -Subject "WatchDog service.company.com" -From support@company.com -Body $previousError
+    restart-service powershelluniversal
+}
 ```
 
 This stores the configuration for the WatchDog:
 - Check if the `alive` API returns a http status of 200
-- If this fails the windows service is restarted
+- If this fails the windows service is restarted and the Error details from the check is send by mail
 
 ## Starting the WatchDog Instance for testing purposes
 
