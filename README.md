@@ -93,15 +93,24 @@ Happy monitoring with PowerShell WatchDog! 🚀👀
 
 ## Key concept and provided functions
 The main concept is quite simple: You need some PowerShell code to check if your application is running normally (aka 'check script') and some PowerShell Code which fixes problems (aka 'correction script').
-These script blocks are called from a scheduled task. If the check fails (the code returns `$false`) the fixing code is executed. And everything is logged in the eventlog.
+These script blocks are called from a scheduled task. If the check fails (the code throws an error) the fixing code is executed. And everything is logged in the event log.
+
+![BPMN diagram](doc/WatchDog-Process.png)
+
 
 The key functions included are:
 
 - **Build-WatchDog:** Configures a WatchDog instance by specifying a name, check script, error correction script, check interval, and other parameters.
-- **Start-WatchDog:** Runs a WatchDog instance in the current console for testing, continuously monitoring and correcting errors based on configured conditions.
+- **Start-WatchDog:** Runs a WatchDog instance in the current console for testing, continuously monitoring and correcting errors based on configured conditions. Call it directly for testing the built config. After registering the instance this function is called from a scheduled task.
 - **Register-WatchDog:** Registers a WatchDog instance by creating an event listener and a scheduled task to execute the Start-WatchDog command.
 - **Unregister-WatchDog:** Unregisters a WatchDog instance by removing its event listener and deleting the associated scheduled task.
 - **Remove-WatchDog:** Delete the saved instance configuration
+- **Get-WatchDogError:** Retrieves the last caught error object
+
+## Errors and how to cope with them
+If a check fails (the test was negative), the scriptblock has to throw an error/exception. If (e.g. in a busy environment plagued with timeouts) a check may fail even if the service is alive, the check will be repeated up to 4 times (default of the `Build-WatchDog -CheckRetryCount` parameter). After this the configured correction script is executed (up to `Build-WatchDog -CorrectionRetryCount` times) to fix the error. If the correction script throws an error, too, the currently running script/scheduled task instance is stopped.
+
+If you want to access the last error object (e.g. to include the data from the check error in an correction mail) you can use the function `Get-WatchDogError`.
 
 ### Built With
 
@@ -192,24 +201,15 @@ Short stop:
 5. Open a Pull Request
 
 
-## Limitations
-* The module works on the ADOM level as this is the only permission set I've been granted
-* Maybe there are some inconsistencies in the docs, which may result in a mere copy/paste marathon from my other projects
-
 <!-- LICENSE -->
 ## License
 
 Distributed under the GNU GENERAL PUBLIC LICENSE version 3. See `LICENSE.md` for more information.
 
-
-
 <!-- CONTACT -->
 ## Contact
 
-
 Project Link: [https://github.com/Callidus2000/WatchDog](https://github.com/Callidus2000/WatchDog)
-
-
 
 <!-- ACKNOWLEDGEMENTS -->
 ## Acknowledgements
