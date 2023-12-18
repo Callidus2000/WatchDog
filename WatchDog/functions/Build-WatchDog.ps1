@@ -72,10 +72,6 @@
         [int]$CheckRetryCount=2
     )
     Test-WatchDogIsAdmin
-    # Build-WatchDog -Name "LocalPSU" -Check { try { (Invoke-WebRequest http://localhost:5000/api/v1/alive -ErrorAction stop).Statuscode -eq 200 }catch { $false } } -ErrorCorrection { restart-service powershelluniversal}
-    # Build-WatchDog -Name "checkFail" -Check { $false } -ErrorCorrection { Write-PSFMessage "Correcting"} -CheckRetryCount 2 -CheckInterval  ([timespan]::FromTicks(5))
-    # Build-WatchDog -Name "checkThrows" -Check { throw "error while checking" } -ErrorCorrection { Write-PSFMessage "Correcting"} -CheckRetryCount 2 -CheckInterval  ([timespan]::FromTicks(5))
-    # Build-WatchDog -Name "actionThrows" -Check { $false } -ErrorCorrection { throw "Exception while Correcting"} -CheckRetryCount 2 -CheckInterval  ([timespan]::FromTicks(5))
     $commonParam=@{
         module='WatchDog'
         AllowDelete=$true

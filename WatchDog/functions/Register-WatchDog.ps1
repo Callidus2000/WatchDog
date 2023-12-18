@@ -35,7 +35,7 @@
         description = "Restart My Service after startup"
         action      = New-ScheduledTaskAction -Execute 'pwsh.exe' -Argument "-WindowStyle Hidden -command `"& Start-WatchDog -Name '$Name'`""
         trigger     = New-ScheduledTaskTrigger -Once -RepetitionInterval ([TimeSpan]::FromMinutes(5)) -At "00:00"
-        settings    = New-ScheduledTaskSettingsSet -ExecutionTimeLimit (New-TimeSpan -Minutes 2) -RestartCount 3 -RestartInterval (New-TimeSpan -Minutes 1) -StartWhenAvailable
+        settings    = New-ScheduledTaskSettingsSet -RestartCount 3 -RestartInterval (New-TimeSpan -Minutes 1) -StartWhenAvailable
         User        = "System"
 
     }

@@ -3,7 +3,7 @@
 	RootModule = 'WatchDog.psm1'
 
 	# Version number of this module.
-	ModuleVersion = '1.1.1'
+	ModuleVersion = '1.1.2'
 
 	# ID used to uniquely identify this module
 	GUID = '368f5935-0766-4c9a-aa12-6407c24998f1'
@@ -40,11 +40,9 @@
 
 	# Functions to export from this module
 	FunctionsToExport = @(
-		# 'Add-WatchDogError'
 		'Build-WatchDog'
 		'Get-WatchDogConfig'
 		'Get-WatchDogError'
-		# 'Invoke-WatchDogScript'
 		'Register-WatchDog'
 		'Remove-WatchDog'
 		'Start-WatchDog'

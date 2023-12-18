@@ -22,6 +22,7 @@
     [CmdletBinding()]
     param (
         [parameter(Mandatory = $true)]
+        [PSFramework.TabExpansion.PsfArgumentCompleterAttribute("WatchDog.instances")]
         [string]$Name
     )
     $storedConfig = Get-PSFConfig -Module WatchDog | Where-Object Name -like "instance.$Name*"

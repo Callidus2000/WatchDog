@@ -32,10 +32,14 @@
     do {
         $everyThingIsFine = Invoke-WatchDogScript -ScriptBlock $config.checkScript -LoggingAction "Perform Check for WatchDog Instance" -LoggingTag $Name -RetryCount $config.checkRetryCount
         if (-not $everyThingIsFine) {
+            Write-PSFMessage -Level Error -Tag $Name -ErrorRecord (Get-WatchDogError) -Message "Watchdog Check failed, trying correction activity"
             $checkErrorCounter++
             $everyThingIsFine = Invoke-WatchDogScript -ScriptBlock $config.correctionScript -LoggingAction "Check failed, performing correction for WatchDog" -LoggingTag $Name -RetryCount $config.correctionRetryCount
-            if (-not $everyThingIsFine){
-                    Stop-PSFFunction -Level Error -Message "Correction ScriptBlock fails, aborting execution" -EnableException $true -Tag $Name
+            if (-not $everyThingIsFine) {
+                # Write-PSFMessage -Level Critical -Tag $Name -ErrorRecord (Get-WatchDogError) -Message "Watchdog Correction failed, stopping instance"
+                Stop-PSFFunction -Level Error -Message "Correction ScriptBlock fails, aborting execution" -EnableException $true -Tag $Name -ErrorRecord (Get-WatchDogError)
+            }else{
+                Write-PSFMessage -Level Host -Tag $Name -Message "Watchdog Correction succeeded"
             }
         }
         else {

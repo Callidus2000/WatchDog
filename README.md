@@ -139,7 +139,7 @@ Please be aware that those commands have to be issued in an administrative shell
 Build-WatchDog -Name "LocalPSU" -Check { 
     if ((Invoke-WebRequest http://localhost:5000/api/v1/alive -ErrorAction stop).Statuscode -ne 200) { throw "Alive status not 200" } 
 } -ErrorCorrection { 
-    $previousError=Get-Error |ConvertTo-Json -Depth 2
+    $previousError=Get-WatchDogError |ConvertTo-Json -Depth 2
     Send-MailMessage -SmtpServer smtp.company.com -To support@company.com -Subject "WatchDog service.company.com" -From support@company.com -Body $previousError
     restart-service powershelluniversal
 }
@@ -165,6 +165,8 @@ This creates a scheduled task which runs forever.
 
 ## Verifying that everything runs
 Take a look at the application event log, the watchdog writes to it.
+
+![Image of the event viewer](doc/LocalPSU_EventVwr.png)
 
 <!-- ROADMAP -->
 ## Roadmap

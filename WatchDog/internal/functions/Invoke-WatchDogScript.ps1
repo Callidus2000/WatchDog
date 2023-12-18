@@ -21,9 +21,6 @@
     .PARAMETER RetryCount
         Specifies the number of times the script block should be retried in case of an error.
 
-    .PARAMETER EnableException
-        Indicates whether to enable exceptions during script execution.
-
     .EXAMPLE
         $script = {
             # Your script logic here
@@ -38,11 +35,16 @@
         $ScriptBlock,
         [string]$LoggingAction,
         [string]$LoggingTag,
-        [int]$RetryCount,
-        [switch]$EnableException
+        [int]$RetryCount
     )
     $myLocalScriptBlock = [scriptblock]::Create($ScriptBlock)
-    Invoke-PSFProtectedCommand -Action $LoggingAction -Target $LoggingTag -ScriptBlock $myLocalScriptBlock  -Level host -EnableException $EnableException -RetryCount $RetryCount -Tag $LoggingTag -ErrorEvent {
-        $args[0]|Add-WatchDogError
+    Invoke-PSFProtectedCommand -Action $LoggingAction -Target $LoggingTag -ScriptBlock $myLocalScriptBlock  -Level host -EnableException $false -RetryCount $RetryCount -Tag $LoggingTag -ErrorEvent {
+        $args[0] | Add-WatchDogError
     }
+    if (Test-PSFFunctionInterrupt) {
+        Write-PSFMessage "Function interupted"
+        return $false
+    }
+    # Write-PSFMessage "Returning $true"
+    return $true
 }
