@@ -13,3 +13,4 @@ Set-PSFConfig -Module 'WatchDog' -Name 'Example.Setting' -Value 10 -Initialize -
 
 Set-PSFConfig -Module 'WatchDog' -Name 'Import.DoDotSource' -Value $false -Initialize -Validation 'bool' -Description "Whether the module files should be dotsourced on import. By default, the files of this module are read as string value and invoked, which is faster but worse on debugging."
 Set-PSFConfig -Module 'WatchDog' -Name 'Import.IndividualFiles' -Value $false -Initialize -Validation 'bool' -Description "Whether the module files should be imported individually. During the module build, all module code is compiled into few files, which are imported instead by default. Loading the compiled versions is faster, using the individual files is easier for debugging and testing out adjustments."
+Set-PSFConfig -Module 'WatchDog' -Name 'ErrorHandling.maxErrors' -Value 10 -Initialize -Validation integer -Description "How many errors should be kept by Add-WatchDogError?"

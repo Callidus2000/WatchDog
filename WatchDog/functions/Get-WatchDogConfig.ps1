@@ -20,6 +20,7 @@
         File Name      : WatchDogFunctions.ps1
     #>
     [CmdletBinding()]
+    [OutputType([System.Collections.Hashtable])]
     param (
         [parameter(Mandatory = $true)]
         [PSFramework.TabExpansion.PsfArgumentCompleterAttribute("WatchDog.instances")]

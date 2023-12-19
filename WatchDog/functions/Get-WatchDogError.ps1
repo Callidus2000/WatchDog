@@ -13,10 +13,12 @@
 
     .EXAMPLE
         Get-WatchDogError
+
         Retrieves the last error from the WatchDog error list.
 
     .EXAMPLE
         Get-WatchDogError -Last 5
+
         Retrieves the last 5 errors from the WatchDog error list, index 0 is the latest
 
     .NOTES

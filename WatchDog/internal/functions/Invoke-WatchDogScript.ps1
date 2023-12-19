@@ -28,9 +28,12 @@
         }
         Invoke-WatchDogScript -ScriptBlock $script -LoggingAction "Log" -LoggingTag "ScriptExecution" -RetryCount 3 -EnableException
 
+        Invokes the scriptblock incl. retry and error handling
+
     .NOTES
     #>
     [CmdletBinding()]
+    [OutputType([System.Boolean])]
     param (
         $ScriptBlock,
         [string]$LoggingAction,

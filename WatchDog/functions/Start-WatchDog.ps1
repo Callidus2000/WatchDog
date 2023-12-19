@@ -20,6 +20,7 @@
         Prerequisite   : PowerShell 5.1 or later
     #>
     [CmdletBinding()]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessforStateChangingFunctions', '')]
     param (
         [parameter(Mandatory = $true)]
         [PSFramework.TabExpansion.PsfArgumentCompleterAttribute("WatchDog.instances")]

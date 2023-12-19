@@ -14,10 +14,12 @@
 
     .EXAMPLE
         Add-WatchDogError -NewError $customError
+
         Adds a custom error object to the WatchDog error list.
 
     .EXAMPLE
         $customError | Add-WatchDogError
+
         Adds a custom error object to the WatchDog error list using the pipeline.
 
     .NOTES
@@ -43,6 +45,7 @@
     }
 
     end {
-        Set-PSFTaskEngineCache -Module WatchDog -Name LastErrors -Value ($errorList|Select-Object -last 10)
+        $maxErrorsToKeep = Get-PSFConfigValue -FullName 'WatchDog.ErrorHandling.maxErrors' -Fallback 20
+        Set-PSFTaskEngineCache -Module WatchDog -Name LastErrors -Value ($errorList | Select-Object -last $maxErrorsToKeep)
     }
 }
